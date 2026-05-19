@@ -14,7 +14,17 @@ const db = low(adapter);
 db.defaults({ trips: [] }).write();
 
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '.')));
+
+// Serve index.html for root
+app.get('/', (req, res) => {
+  const indexPath = path.join(__dirname, 'index.html');
+  if (require('fs').existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  }
+});
 
 // ===== API =====
 
