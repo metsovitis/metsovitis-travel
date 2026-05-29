@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,7 +45,6 @@ app.get('/api/health', async (req, res) => {
   } catch(e) { res.json({ ok: false, error: e.message }); }
 });
 
-// Drivers API
 app.get('/api/drivers', async (req, res) => {
   try {
     await pool.query('CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value JSONB)');
@@ -82,8 +82,6 @@ app.post('/api/partners', async (req, res) => {
     res.json({ ok: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
-
-const https = require('https');
 
 app.post('/api/ai-parse', async (req, res) => {
   const { text } = req.body;
